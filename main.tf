@@ -24,9 +24,7 @@ resource "aws_vpc" "main" {
 resource "aws_subnet" "pub_1" {
   vpc_id     = aws_vpc.main.id
   cidr_block = "10.0.1.0/24"
-
   availability_zone = "us-east-1a"
-
   tags = {
     Name = "pub-subnet-1"
   }
@@ -42,6 +40,7 @@ resource "aws_subnet" "pub_2" {
 }
 
 resource "aws_subnet" "pub_3" {
+  count             = length(var.pub_subnets)
   vpc_id            = aws_vpc.main.id
   cidr_block        = "10.0.3.0/24"
   availability_zone = "us-east-1c"
@@ -110,3 +109,4 @@ resource "aws_route_table_association" "pub_3" {
   subnet_id      = aws_subnet.pub_3.id
   route_table_id = aws_route_table.public.id
 }
+
